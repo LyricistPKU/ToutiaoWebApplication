@@ -38,9 +38,9 @@ public class HomeController {
 
     // for return news list viewobject
     private List<ViewObject> getNews(int userId, int offset, int limit){
-        List<News> newsList = newsService.getLatestNews(userId, offset, limit);
         int localUserId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
         List<ViewObject> vos = new ArrayList<>();
+        List<News> newsList = newsService.getLatestNews(userId, offset, limit);
         for(News news : newsList){
             ViewObject vo = new ViewObject();
             vo.set("news", news);
@@ -56,6 +56,25 @@ public class HomeController {
         return vos;
     }
 
+    private List<ViewObject> getLastesNews(int offset, int limit){
+        List<News> newsList = newsService.getGolobalLatestNews(offset, limit);
+        int localUserId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
+        List<ViewObject> vos = new ArrayList<>();
+        for(News news : newsList){
+            ViewObject vo = new ViewObject();
+            vo.set("news", news);
+            vo.set("user", userService.getUser(news.getUserId()));
+            if(localUserId == 1){
+                vo.set("like", 0);
+            }
+            else{
+                vo.set("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
+            }
+            vos.add(vo);
+        }
+        return vos;
+    }
+
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String index(Model model, @RequestParam(value = "pop", defaultValue = "0") int pop){
         int userId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
@@ -64,7 +83,7 @@ public class HomeController {
             pop = 0;
         }
         model.addAttribute("pop", pop);
-        model.addAttribute("vos", getNews(userId, 0, 10));
+        model.addAttribute("vos", getLastesNews(0, 20));
         model.addAttribute("user", hostholder.getUser());
         return "home";
     }

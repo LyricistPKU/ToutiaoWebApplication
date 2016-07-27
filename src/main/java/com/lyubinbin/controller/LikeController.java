@@ -42,7 +42,7 @@ public class LikeController {
         //produce an event to send an internal message
         //the return value of set function is this, you can set all attributes in a line
         eventProducer.fireEvent(new EventModel(EventType.LIKE).setActorId(hostholder.getUser().getId()).setEntityType(EntityType.ENTITY_NEWS)
-        .setEntityId(newsId).setEntityOwnerId(news.getUserId()));
+        .setEntityId(newsId).setEntityOwnerId(news.getUserId()).setExts("title", news.getTitle()));
         return ToutiaoUtil.getJSONString(0, String.valueOf(likeCount));
     }
 

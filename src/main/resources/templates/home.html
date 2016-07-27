@@ -4,6 +4,7 @@
 
         <div class="container" id="daily">
             <div class="jscroll-inner">
+
                 <div class="daily">
 
                     <h3 class="date">
@@ -35,14 +36,16 @@
                                 </div>
                                 <div class="content-main">
                                     <h3 class="title">
-                                        <a target="_blank" rel="external nofollow" href="$!{vo.news.link}">$!{vo.news.title}</a>
+                                        <a target="_blank" rel="external nofollow" href="/news/$!{vo.news.id}">$!{vo.news.title}</a>
                                     </h3>
                                     <div class="meta">
                                         <a href="$!{vo.news.link}">
                                             $!{vo.news.link};
                                         </a>
                                         <span>
-                                            <i class="fa icon-comment"></i> $!{vo.news.commentCount}
+                                            <a href="/news/$!{vo.news.id}">
+                                            <i class="fa icon-comment"> </i> $!{vo.news.commentCount}
+                                            </a>
                                         </span>
                                     </div>
                                 </div>
@@ -63,7 +66,10 @@
                                 -->
                             </div>
 
-                            <div class="subject-name">来自 <a href="/user/$!{vo.user.id}">$!{vo.user.name}</a></div>
+                            <div class="subject-name">
+                                来自 <a href="/user/$!{vo.user.id}">$!{vo.user.name}</a><br>
+                                $date.format('yyyy-MM-dd hh:mm', $vo.news.createdDate)
+                            </div>
                         </div>
                         #end
                     </div>

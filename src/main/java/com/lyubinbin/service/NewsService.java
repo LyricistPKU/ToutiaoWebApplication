@@ -27,6 +27,10 @@ public class NewsService {
         return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
     }
 
+    public List<News> getGolobalLatestNews(int offset, int limit){
+        return newsDAO.selectByOffset(offset, limit);
+    }
+
     public int addNews(News news){
         newsDAO.addNews(news);
         return news.getId();

@@ -9,7 +9,6 @@
             //.表示class #表示id
             'click .js-login': fClickLogin,
             'click .js-share': fClickShare,
-            'click .fa icon-comment': fClickComment
         },
         events: {
             'click button.click-like': fClickLike,

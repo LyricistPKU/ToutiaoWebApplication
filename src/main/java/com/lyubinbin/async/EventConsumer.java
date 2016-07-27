@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * event consumer using redis brpop
  * Created by Lyu binbin on 2016/7/20.
  */
 @Service

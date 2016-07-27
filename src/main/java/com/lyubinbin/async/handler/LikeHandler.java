@@ -8,6 +8,7 @@ import com.lyubinbin.model.Message;
 import com.lyubinbin.model.User;
 import com.lyubinbin.service.MessageService;
 import com.lyubinbin.service.UserService;
+import com.lyubinbin.util.ToutiaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,9 +36,11 @@ public class LikeHandler implements EventHandler{
         //from id is system user id
         message.setFromId(1);
         User user = userService.getUser(model.getActorId());
-        message.setContent("User " + user.getName() + "liked your news http://127.0.0.1:8080/news/" + model.getEntityId());
+        message.setContent("User " + user.getName() + " liked your news: " + model.getExts("title"));
         message.setCreatedDate(new Date());
         message.setToId(model.getEntityOwnerId());
+        message.setConversationId(ToutiaoUtil.getConversationId(1, model.getEntityOwnerId()));
+        message.setHasRead(0);
         messageService.addMessage(message);
     }
 

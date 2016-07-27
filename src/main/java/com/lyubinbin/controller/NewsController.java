@@ -45,8 +45,9 @@ public class NewsController {
     LikeService likeService;
 
     //show news detail page
-    @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String newsDetail(@PathVariable("newsId") int newsId, Model model){
+        System.out.println(newsId);
         News news = newsService.getById(newsId);
         int localUserId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
         if(news != null){
@@ -56,7 +57,8 @@ public class NewsController {
             else{
                 model.addAttribute("like", 0);
             }
-            List<Comment> comments = commentService.getCommentByEntity(EntityType.ENTITY_NEWS, newsId);
+            List<Comment> comments = commentService.getCommentByEntity(newsId, EntityType.ENTITY_NEWS);
+            System.out.println(comments.size());
             List<ViewObject> vos = new ArrayList<>();
             for(Comment comment : comments){
                 ViewObject vo = new ViewObject();
@@ -66,32 +68,34 @@ public class NewsController {
             }
             model.addAttribute("commentvos", vos);
         }
-        model.addAttribute("visiterId", localUserId);
+        model.addAttribute("user", userService.getUser(localUserId));
         model.addAttribute("news", news);
         model.addAttribute("owner", userService.getUser(news.getUserId()));
+        System.out.println(model.toString());
         return "detail";
     }
 
     // add comment and redirect to the same page
-    @RequestMapping(path = {"/addComment"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/addComment"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String addComment(@RequestParam("newsId") int newsId,
                              @RequestParam("content") String content){
         try{
             // filtering content
             content = HtmlUtils.htmlEscape(content);
-            Comment comment = new Comment();
-            comment.setUserId(hostholder.getUser().getId());
-            comment.setEntityId(newsId);
-            // comment on news, you can also design comment on comments
-            comment.setEntityType(EntityType.ENTITY_NEWS);
-            comment.setContent(content);
-            comment.setcreatedDate(new Date());
-            comment.setStatus(0);
-            commentService.addComment(comment);
+            if(content != null){
+                Comment comment = new Comment();
+                comment.setUserId(hostholder.getUser().getId());
+                comment.setEntityId(newsId);
+                // comment on news, you can also design comment on comments
+                comment.setEntityType(EntityType.ENTITY_NEWS);
+                comment.setContent(content);
+                comment.setcreatedDate(new Date());
+                comment.setStatus(0);
+                commentService.addComment(comment);
 
-            int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
-            newsService.updateCommentCount(newsId, count);
-
+                int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
+                newsService.updateCommentCount(newsId, count);
+            }
         }catch (Exception e){
             logger.error("Add Comment Failed: " + e.getMessage());
         }
@@ -107,7 +111,7 @@ public class NewsController {
             response.setContentType("image/jpeg");
             response.setContentType("image/png");
             // download from qiniu cloud
-            URL url = new URL(ToutiaoUtil.QINIU_DOMAIN_PREFIX + iamgeName);
+            URL url = new URL(ToutiaoUtil.QINIU_DOMAIN_PREFIX + iamgeName + ToutiaoUtil.QINIU_FORMAT_NORMAL);
             URLConnection urlConnection = url.openConnection();
             InputStream inputStream = urlConnection.getInputStream();
             StreamUtils.copy(inputStream, response.getOutputStream());
@@ -141,7 +145,7 @@ public class NewsController {
             News news = new News();
             news.setCreatedDate(new Date());
             news.setTitle(title);
-            news.setImage(image);
+            news.setImage(image + ToutiaoUtil.QINIU_FORMAT_NORMAL);
             news.setLink(link);
             if (hostholder.getUser() != null) {
                 news.setUserId(hostholder.getUser().getId());

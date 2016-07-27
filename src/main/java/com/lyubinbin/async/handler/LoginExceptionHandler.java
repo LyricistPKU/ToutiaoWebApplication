@@ -7,6 +7,7 @@ import com.lyubinbin.async.EventType;
 import com.lyubinbin.model.Message;
 import com.lyubinbin.service.MessageService;
 import com.lyubinbin.util.MailSender;
+import com.lyubinbin.util.ToutiaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +35,7 @@ public class LoginExceptionHandler implements EventHandler{
             message.setToId(model.getActorId());
             message.setFromId(1);
             message.setCreatedDate(new Date());
-            message.setConversationId(String.valueOf(0) + "_" + String.valueOf(model.getActorId()));
+            message.setConversationId(ToutiaoUtil.getConversationId(1, model.getActorId()));
             message.setHasRead(0);
             message.setContent("You logged in ToutiaoNews at: " + new Date().toString());
             messageService.addMessage(message);

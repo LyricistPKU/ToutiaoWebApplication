@@ -41,6 +41,7 @@ public class UserService {
         User user = new User();
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
+        // put head pic by user themselves?
         user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
         user.setPassword(ToutiaoUtil.MD5(password + user.getSalt()));
         userDAO.addUser(user);

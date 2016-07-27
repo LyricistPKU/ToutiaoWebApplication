@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * login controller
@@ -73,9 +74,11 @@ public class LoginController {
                 }
                 response.addCookie(cookie);
 
-                eventProducer.fireEvent(new EventModel(EventType.LOGIN).setActorId((int) map.get("userId"))
-                .setExts("username", username).setExts("email", "cxlvbinbin@pku.edu.cn"));
-
+                Pattern p = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
+                if(p.matcher(username).matches()){
+                    eventProducer.fireEvent(new EventModel(EventType.LOGIN).setActorId((int) map.get("userId"))
+                            .setExts("username", username).setExts("email", username));                    
+                }
                 return ToutiaoUtil.getJSONString(0, "Login Succeeded!");
             }
             else{
@@ -88,7 +91,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(path = {"/logout/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("loginTicket") String loginTicket){
         userService.logout(loginTicket);
         return "redirect:/";
