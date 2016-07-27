@@ -14,8 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,9 +48,9 @@ public class NewsController {
     @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
     public String newsDetail(@PathVariable("newsId") int newsId, Model model){
         News news = newsService.getById(newsId);
+        int localUserId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
         if(news != null){
-            int localUserId = hostholder.getUser() == null ? 0 : hostholder.getUser().getId();
-            if(localUserId != 0){
+            if(localUserId != 1){
                 model.addAttribute("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
             }
             else{
@@ -65,6 +66,7 @@ public class NewsController {
             }
             model.addAttribute("commentvos", vos);
         }
+        model.addAttribute("visiterId", localUserId);
         model.addAttribute("news", news);
         model.addAttribute("owner", userService.getUser(news.getUserId()));
         return "detail";
@@ -103,30 +105,34 @@ public class NewsController {
                          HttpServletResponse response){
         try{
             response.setContentType("image/jpeg");
-            // download from qiniu cloud ???
-            StreamUtils.copy(new FileInputStream(new File(ToutiaoUtil.QINIU_DOMAIN_PREFIX + iamgeName)), response.getOutputStream());
+            response.setContentType("image/png");
+            // download from qiniu cloud
+            URL url = new URL(ToutiaoUtil.QINIU_DOMAIN_PREFIX + iamgeName);
+            URLConnection urlConnection = url.openConnection();
+            InputStream inputStream = urlConnection.getInputStream();
+            StreamUtils.copy(inputStream, response.getOutputStream());
         }catch (Exception e){
             logger.error("Read Image Failed: " + e.getMessage());
         }
     }
 
-    @RequestMapping(path = {"/uploadImage/"}, method = {RequestMethod.POST})
+    @RequestMapping(path = {"/uploadImage"}, method = {RequestMethod.POST})
     @ResponseBody
-    public String uploadImage(@RequestParam("file") MultipartFile file) {
-        try {
-            //String fileUrl = newsService.saveIamge(file);
+    public String uploadImage(@RequestParam("file") MultipartFile file){
+        try{
+            //String fileUrl = newsService.saveImage(file);
             String fileUrl = qiniuService.saveImage(file);
-            if (fileUrl == null) {
-                return ToutiaoUtil.getJSONString(1, "Upload Failed");
+            if(fileUrl == null){
+                return ToutiaoUtil.getJSONString(1, "Upload Failed.");
             }
             return ToutiaoUtil.getJSONString(0, fileUrl);
-        } catch (Exception e) {
-            logger.error("Upload Failed" + e.getMessage());
+        }catch(Exception e){
+            logger.error("Upload Image Failed" + e.getMessage());
             return ToutiaoUtil.getJSONString(1, "Upload Failed");
         }
     }
 
-    @RequestMapping(path = {"/user/addNews/"}, method = {RequestMethod.POST})
+    @RequestMapping(path = {"/user/addNews"}, method = {RequestMethod.POST})
     @ResponseBody
     public String addNews(@RequestParam("image") String image,
                           @RequestParam("title") String title,
@@ -140,8 +146,8 @@ public class NewsController {
             if (hostholder.getUser() != null) {
                 news.setUserId(hostholder.getUser().getId());
             } else {
-                // anonymous user
-                news.setUserId(3);
+                // admin user
+                news.setUserId(1);
             }
             newsService.addNews(news);
             return ToutiaoUtil.getJSONString(0);

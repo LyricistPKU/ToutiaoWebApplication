@@ -55,12 +55,11 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware{
                 String key = RedisKeyUtil.getEventQueueKey();
                 while(true){
                     // get evets from the right side of the list, blocking
-                    System.out.println(jedisAdapter.get(key));
                     List<String> events = jedisAdapter.brpop(0, key);
 
                     // brpop returns key name and value, you should ignore the key string
                     for(String message : events){
-                        System.out.println("Event Consumer Started!");
+//                      System.out.println("Event Consumer Started!");
                         if(message.equals(key)){
                             continue;
                         }

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
- * passport interceptor
+ * passport interceptor, @Component to initialize at start
  * Created by Lyu binbin on 2016/7/25.
  */
 @Component
@@ -35,21 +35,25 @@ public class PassportInterceptor implements HandlerInterceptor{
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+//        System.out.println("Do PassportInterceptor!");
         String ticket = null;
         if(httpServletRequest.getCookies() != null){
             for(Cookie cookie : httpServletRequest.getCookies()){
-                if(cookie.getName().equals("ticket")){
+                if(cookie.getName().equals("loginTicket")){
                     ticket = cookie.getValue();
                     break;
                 }
             }
         }
+//        System.out.println(ticket);
         if(ticket != null){
             LoginTicket loginTicket = ticketDAO.selectByTicket(ticket);
             if(loginTicket == null || loginTicket.getExpired().before(new Date()) || loginTicket.getStatus() != 0){
+                System.out.println("Invalid ticket");
                 return true;
             }
             User user = userDAO.selectById(loginTicket.getUserId());
+//            System.out.println("User set!");
             hostholder.setUser(user);
         }
         return true;

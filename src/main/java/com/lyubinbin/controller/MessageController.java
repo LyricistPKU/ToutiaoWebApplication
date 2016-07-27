@@ -61,23 +61,36 @@ public class MessageController {
     @RequestMapping(path = {"/msg/detail"}, method = {RequestMethod.GET})
     public String conversationDetail(@Param("conversationId") String conversationId, Model model){
         try{
+            if(hostholder.getUser() != null){
+                messageService.updateMessageStatus(conversationId, hostholder.getUser().getId(), 1);
+            }
             List<Message> conversationList = messageService.getConversationDetail(conversationId, 0, 10);
             List<ViewObject> messages = new ArrayList<>();
+//            System.out.println(conversationList.size());
             for(Message msg : conversationList){
+                System.out.println(msg.toString());
+                messageService.updateMessageStatus(conversationId, msg.getToId(), 1);
                 ViewObject vo = new ViewObject();
                 vo.set("message", msg);
                 User user = userService.getUser(msg.getFromId());
                 if(user == null){
                     continue;
                 }
+                model.addAttribute("user", user);
                 vo.set("headUrl", user.getHeadUrl());
-                vo.set("userId", user.getId());
+                if(hostholder.getUser() != null && hostholder.getUser().getId() == user.getId()){
+                    vo.set("name", "Me");
+                }
+                else{
+                    vo.set("name", user.getName());
+                }
                 messages.add(vo);
             }
-            model.addAttribute("message", messages);
+            model.addAttribute("messages", messages);
             return "letterDetail";
         }catch (Exception e){
             logger.error("Get Conversation Detail Failed: " + e.getMessage());
+            e.printStackTrace();
             return ToutiaoUtil.getJSONString(1, "Get Conversation Detail Failed");
         }
     }
@@ -85,18 +98,23 @@ public class MessageController {
     @RequestMapping(path = {"/msg/list"}, method = {RequestMethod.GET})
     public String conversationList(Model model){
         try{
-            int localUserId = hostholder.getUser().getId();
+            int localUserId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
             List<ViewObject> conversations = new ArrayList<>();
             List<Message> conversationList = messageService.getConversationList(localUserId, 0, 10);
             for(Message msg : conversationList){
+//                System.out.println(msg.getContent());
                 ViewObject vo = new ViewObject();
-                vo.set("conversation", msg);
+                vo.set("msg", msg);
                 int targetId = msg.getFromId() == localUserId ? msg.getToId() : msg.getFromId();
                 User user = userService.getUser(targetId);
                 vo.set("target", user);
                 vo.set("unread", messageService.getConversationUnreadCount(localUserId, msg.getConversationId()));
+                vo.set("count", messageService.getConversationCount(msg.getConversationId()));
+                vo.set("conversationId", ToutiaoUtil.getConversationId(msg.getFromId(), msg.getToId()));
                 conversations.add(vo);
             }
+//            System.out.println(localUserId);
+            model.addAttribute("user", hostholder.getUser());
             model.addAttribute("conversation", conversations);
         }catch (Exception e){
             logger.error("Reading Conversation List Failed: " + e.getMessage());

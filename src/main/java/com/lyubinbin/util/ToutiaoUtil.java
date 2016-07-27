@@ -18,6 +18,11 @@ public class ToutiaoUtil {
     public static String TOUTIAO_DOMAIN = "http://127.0.0.1:8080/";
     public static String QINIU_DOMAIN_PREFIX = "http://oav5h17rz.bkt.clouddn.com/";
 
+    public static String getConversationId(int fromId, int toId){
+        String conversationId = fromId < toId ? String.valueOf(fromId) + "_" + String.valueOf(toId) : String.valueOf(toId) + "_" + String.valueOf(fromId);
+        return conversationId;
+    }
+
     public static String getJSONString(int code) {
         JSONObject json = new JSONObject();
         json.put("code", code);

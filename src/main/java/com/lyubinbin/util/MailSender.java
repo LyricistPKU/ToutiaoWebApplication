@@ -43,6 +43,7 @@ public class MailSender implements InitializingBean {
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(result, true);
             mailSender.send(mimeMessage);
+//            System.out.println("Mail sent!");
             return true;
         } catch (Exception e) {
             logger.error("Email sent failed: " + e.getMessage());

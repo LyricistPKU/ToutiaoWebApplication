@@ -27,12 +27,18 @@ public class LoginExceptionHandler implements EventHandler{
     @Override
     public void doHandle(EventModel model) {
         //jedge if abnormal login happen
-        System.out.println("Do LoginExceptionHandler!");
-        Message message = new Message();
-        message.setToId(model.getActorId());
-        message.setFromId(3);
-        message.setCreatedDate(new Date());
-        messageService.addMessage(message);
+        // user id 0 is administry account
+//        System.out.println("Do LoginExceptionHandler!");
+        if(model.getActorId() != 1){
+            Message message = new Message();
+            message.setToId(model.getActorId());
+            message.setFromId(1);
+            message.setCreatedDate(new Date());
+            message.setConversationId(String.valueOf(0) + "_" + String.valueOf(model.getActorId()));
+            message.setHasRead(0);
+            message.setContent("You logged in ToutiaoNews at: " + new Date().toString());
+            messageService.addMessage(message);
+        }
 
         Map<String, Object> map = new HashMap<>();
         map.put("username", model.getExts("username"));

@@ -39,13 +39,13 @@ public class HomeController {
     // for return news list viewobject
     private List<ViewObject> getNews(int userId, int offset, int limit){
         List<News> newsList = newsService.getLatestNews(userId, offset, limit);
-        int localUserId = hostholder.getUser() == null ? 0 : hostholder.getUser().getId();
+        int localUserId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
         List<ViewObject> vos = new ArrayList<>();
         for(News news : newsList){
             ViewObject vo = new ViewObject();
             vo.set("news", news);
             vo.set("user", userService.getUser(news.getUserId()));
-            if(localUserId != 0){
+            if(localUserId != 1){
                 vo.set("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
             }
             else{
@@ -58,17 +58,21 @@ public class HomeController {
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String index(Model model, @RequestParam(value = "pop", defaultValue = "0") int pop){
-        model.addAttribute("vos", getNews(0, 0, 10));
+        int userId = hostholder.getUser() == null ? 1 : hostholder.getUser().getId();
+//        System.out.println(userId);
         if(hostholder.getUser() != null){
             pop = 0;
         }
         model.addAttribute("pop", pop);
+        model.addAttribute("vos", getNews(userId, 0, 10));
+        model.addAttribute("user", hostholder.getUser());
         return "home";
     }
 
     @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String userIndex(Model model, @PathVariable("userId") int userId){
         model.addAttribute("vos", getNews(userId, 0, 10));
+        model.addAttribute("user", hostholder.getUser());
         return "home";
     }
 }

@@ -1,10 +1,7 @@
 package com.lyubinbin.dao;
 
 import com.lyubinbin.model.Message;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,9 +24,12 @@ public interface MessageDAO {
     @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and to_id=#{userId} and conversation_id=#{conversationId}"})
     int getConversationUnReadCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
 
-    @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and to_id=#{userId}"})
-    int getConversationTotalCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
+    @Select({"select count(id) from ", TABLE_NAME, " where conversation_id=#{conversationId}"})
+    int getConversationCount(@Param("conversationId") String conversationId);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where conversation_id=#{conversationId} order by id desc limit #{offset},#{limit}"})
     List<Message> getConversationDetail(@Param("conversationId") String conversationId, @Param("offset") int offset, @Param("limit") int limit);
+
+    @Update({"update ", TABLE_NAME, "set has_read = #{hasRead} where conversation_id=#{conversationId} and to_id = #{toId}"})
+    int updateMessageStatus(@Param("conversationId") String conversationId, @Param("toId") int toId, @Param("hasRead") int hasRead);
 }

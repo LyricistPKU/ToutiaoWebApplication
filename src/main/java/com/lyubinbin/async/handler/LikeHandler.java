@@ -33,7 +33,7 @@ public class LikeHandler implements EventHandler{
 
         Message message = new Message();
         //from id is system user id
-        message.setFromId(3);
+        message.setFromId(1);
         User user = userService.getUser(model.getActorId());
         message.setContent("User " + user.getName() + "liked your news http://127.0.0.1:8080/news/" + model.getEntityId());
         message.setCreatedDate(new Date());
