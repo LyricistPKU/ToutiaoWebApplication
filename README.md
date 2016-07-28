@@ -1,51 +1,52 @@
 # ToutiaoWebApplication
-ÏîÄ¿ÊµÏÖ¹¦ÄÜ£º
-×¢²á¡¢µÇÂ¼¡¢ÆÀÂÛ¡¢Í¼Æ¬µÄÔÆ´æ´¢¡¢Õ¾ÄÚĞÅ»¥·¢¡¢Òì²½ÔŞ²È¡¢µÇÂ¼ÓÊ¼şÍ¨Öª£¨Òì²½£©
-ÏîÄ¿Î´Íê³É£º
-ÓÃ»§Í·ÏñÉÏ´«¡¢×¢²áĞÅÏ¢µÄÏêÏ¸»¯£¨ĞèÒª¸ÄÊı¾İ¿â£©£¬µã»÷¸ü¶à£¨load more£©£¬ĞÂÎÅÅÅĞò£¨Ä¿Ç°µÇÂ¼Ê×Ò³ĞÂÎÅ°´ÕÕÊ±¼äÅÅĞò£©£¬
-¶ÔÆÀÂÛµÄÆÀÂÛ£¬ÓÃ»§µÈ¼¶»ı·Ö...
+é¡¹ç›®å®ç°åŠŸèƒ½ï¼š
+æ³¨å†Œã€ç™»å½•ã€è¯„è®ºã€å›¾ç‰‡çš„äº‘å­˜å‚¨ã€ç«™å†…ä¿¡äº’å‘ã€å¼‚æ­¥èµè¸©ã€ç™»å½•é‚®ä»¶é€šçŸ¥ï¼ˆå¼‚æ­¥ï¼‰
+é¡¹ç›®æœªå®Œæˆï¼š
+ç”¨æˆ·å¤´åƒä¸Šä¼ ã€æ³¨å†Œä¿¡æ¯çš„è¯¦ç»†åŒ–ï¼ˆéœ€è¦æ”¹æ•°æ®åº“ï¼‰ï¼Œç‚¹å‡»æ›´å¤šï¼ˆload moreï¼‰ï¼Œæ–°é—»æ’åºï¼ˆç›®å‰ç™»å½•é¦–é¡µæ–°é—»æŒ‰ç…§æ—¶é—´æ’åºï¼‰ï¼Œ
+å¯¹è¯„è®ºçš„è¯„è®ºï¼Œç”¨æˆ·ç­‰çº§ç§¯åˆ†...
 
-1.	À¹½ØÆ÷£º
-£¨implements HandlerInterceptor; override preHandle, postHandle, afterCompletion£©
-PassportInterceptor£º´ÓCookieÖĞÑ°ÕÒToutiaoWebApplicationËù·¢·ÅµÄµÇÂ¼Cookie£¬Ğ£ÑéÊÇ·ñÓĞĞ§£¨status£©ºÍÊÇ·ñ¹ıÆÚ£¨expired£©£¬·ûºÏÌõ¼şÔòÈ¡³öÓÃ»§ĞÅÏ¢£¬ÏòhostholderÖĞÌí¼ÓÕâ¸öuser
-LoginRequiredInterceptor: ÔÚÏûÏ¢£¬Í·ÌõÒ³Ãæ½øÈëcontroller²ãÖ®Ç°¼ì²éÊÇ·ñÒÑ¾­µÇÂ¼£¬Ò³ÃæÉÏ·½ÏÔÊ¾µÇÂ¼°´Å¥»òÓÃ»§ĞÕÃû¡£
-Hostholder£ºÎ¬»¤Ò»¸öThreadLocal<User>
+1.	æ‹¦æˆªå™¨ï¼š
+ï¼ˆimplements HandlerInterceptor; override preHandle, postHandle, afterCompletionï¼‰
+PassportInterceptorï¼šä»Cookieä¸­å¯»æ‰¾ToutiaoWebApplicationæ‰€å‘æ”¾çš„ç™»å½•Cookieï¼Œæ ¡éªŒæ˜¯å¦æœ‰æ•ˆï¼ˆstatusï¼‰å’Œæ˜¯å¦è¿‡æœŸï¼ˆexpiredï¼‰ï¼Œç¬¦åˆæ¡ä»¶åˆ™å–å‡ºç”¨æˆ·ä¿¡æ¯ï¼Œå‘hostholderä¸­æ·»åŠ è¿™ä¸ªuser
+LoginRequiredInterceptor: åœ¨æ¶ˆæ¯ï¼Œå¤´æ¡é¡µé¢è¿›å…¥controllerå±‚ä¹‹å‰æ£€æŸ¥æ˜¯å¦å·²ç»ç™»å½•ï¼Œé¡µé¢ä¸Šæ–¹æ˜¾ç¤ºç™»å½•æŒ‰é’®æˆ–ç”¨æˆ·å§“åã€‚
+Hostholderï¼šç»´æŠ¤ä¸€ä¸ªThreadLocal<User>
 
-2.	Ä£ĞÍ¶¨Òå
-News£¨ĞÂÎÅ£©£ºid,title,link,image,like_count,comment_count,created_date,user_id
-User£¨ÓÃ»§£©£ºid,name,password,salt,head_url
-ÃÜÂëÓÉËæ»úÉú³ÉµÄsaltºÍpwd¾­¹ıMMD5¼ÓÃÜµÃµ½,ÓÃ»§email×Ö¶ÎºÍÍ·ÏñÉÏ´«µÄÇ°ºó¶Ë½»»¥Î´Íê³É
-Message£¨ÏûÏ¢¡¢Õ¾ÄÚĞÅ£©£ºid,from_id,to_id,created_date,has_read,conversation_id
-Login_ticket£¨ÍøÕ¾µÇÂ¼µÄCookie£©:id,user_id,ticket,expired,status
-Comment£¨ÆÀÂÛ£©£ºid,content,user_id,entity_id£¨ÆÀÂÛ¶ÔÏóµÄid£©,entity_type£¨ÆÀÂÛ¶ÔÏóµÄÀàĞÍ£©,created_date,status      
+2.	æ¨¡å‹å®šä¹‰
+Newsï¼ˆæ–°é—»ï¼‰ï¼šid,title,link,image,like_count,comment_count,created_date,user_id
+Userï¼ˆç”¨æˆ·ï¼‰ï¼šid,name,password,salt,head_url
+å¯†ç ç”±éšæœºç”Ÿæˆçš„saltå’Œpwdç»è¿‡MMD5åŠ å¯†å¾—åˆ°,ç”¨æˆ·emailå­—æ®µå’Œå¤´åƒä¸Šä¼ çš„å‰åç«¯äº¤äº’æœªå®Œæˆ
+Messageï¼ˆæ¶ˆæ¯ã€ç«™å†…ä¿¡ï¼‰ï¼šid,from_id,to_id,created_date,has_read,conversation_id
+Login_ticketï¼ˆç½‘ç«™ç™»å½•çš„Cookieï¼‰:id,user_id,ticket,expired,status
+Commentï¼ˆè¯„è®ºï¼‰ï¼šid,content,user_id,entity_idï¼ˆè¯„è®ºå¯¹è±¡çš„idï¼‰,entity_typeï¼ˆè¯„è®ºå¯¹è±¡çš„ç±»å‹ï¼‰,created_date,status      
 
-3.	ÇĞÃæ±à³ÌAOP
+3.	åˆ‡é¢ç¼–ç¨‹AOP
 @Before("execution(* com.lyubinbin.controller.*Controller.*(..))")
 @After("execution(* com.lyubinbin.controller.*Controller.*(..))")
-log³öJoitpointµÄĞÅÏ¢
+åœ¨controllerå±‚çš„æ‰€æœ‰å‡½æ•°æ‰§è¡Œä¹‹å‰ä¸ä¹‹åæ‰§è¡Œåˆ‡é¢çš„ä»£ç 
+logå‡ºJoitpointçš„ä¿¡æ¯
 
-4.	DAO²ã
-ÓÃMyBatisÌá¹©µÄJDBC½Ó¿ÚÊµÏÖService²ãÓëÊı¾İ¿âµÄ½»»¥
+4.	DAOå±‚
+ç”¨MyBatisæä¾›çš„JDBCæ¥å£å®ç°Serviceå±‚ä¸æ•°æ®åº“çš„äº¤äº’
 
-4.	Service²ã¡ª¡ªÌá¹©²Ù×÷DAO²ã½ø¶ø²Ù×÷Êı¾İ¿âµÄ½Ó¿Ú
-CommentService£º»ñÈ¡¡¢Ôö¼Ó¡¢É¾³ıÆÀÂÛ
-LikeService£ºµãÔŞ¡¢µã²È£¨RedisÊı¾İ¿âÊµÏÖ£¬¸ù¾İÔŞ²È¶ÔÏóµÄÀàĞÍºÍid¹¹Ôìkey£©
-MessageService£º»ñÈ¡¶Ô»°ĞÅÏ¢£¬Î´¶ÁÊıÁ¿µÈ
-NewsService£º»ñÈ¡×îĞÂĞÂÎÅ£¬Ìí¼ÓĞÂÎÅ£¬¸üĞÂÆÀÂÛÊı
-QiniuService£ºÓÃÆßÅ£ÔÆÀ´ÊµÏÖÍ¼Æ¬µÄÉÏ´«¡¢´æ´¢ºÍËõ·Å
-UserService£º»ñÈ¡ÓÃ»§ĞÅÏ¢
+4.	Serviceå±‚â€”â€”æä¾›æ“ä½œDAOå±‚è¿›è€Œæ“ä½œæ•°æ®åº“çš„æ¥å£
+CommentServiceï¼šè·å–ã€å¢åŠ ã€åˆ é™¤è¯„è®º
+LikeServiceï¼šç‚¹èµã€ç‚¹è¸©ï¼ˆRedisæ•°æ®åº“å®ç°ï¼Œæ ¹æ®èµè¸©å¯¹è±¡çš„ç±»å‹å’Œidæ„é€ keyï¼‰
+MessageServiceï¼šè·å–å¯¹è¯ä¿¡æ¯ï¼Œæœªè¯»æ•°é‡ç­‰
+NewsServiceï¼šè·å–æœ€æ–°æ–°é—»ï¼Œæ·»åŠ æ–°é—»ï¼Œæ›´æ–°è¯„è®ºæ•°
+QiniuServiceï¼šç”¨ä¸ƒç‰›äº‘æ¥å®ç°å›¾ç‰‡çš„ä¸Šä¼ ã€å­˜å‚¨å’Œç¼©æ”¾
+UserServiceï¼šè·å–ç”¨æˆ·ä¿¡æ¯
 
-5.	Controller²ã
-HomeController£º/index, /user/{userId}£¬·ÃÎÊÄ¬ÈÏ»ò×Ô¼ºµÄÊ×Ò³£¬·ÃÎÊ±ğÈËÊ×Ò³
-LoginController£º/reg, /login, /logout£¬×¢²á£¬µÇÂ¼£¬µÇ³ö
-MessageController£º/msg/list, /msg/detail£¨½øÈëdetailÒ³ÃæºóÇå³ıÏà¹ØÎ´¶ÁĞÅÏ¢£©, /msg/addmessage£¬¸öÈËÕ¾ÄÚĞÅÁĞ±í£¬¾ßÌå¶Ô»°¿ò£¬·¢ËÍÕ¾ÄÚĞÅ£¨±íµ¥postÌá½»£©
-NewsController£º/news/{newsId}, /user/assNews, /uploadImage, /image, /addComment£¬ĞÂÎÅµÄÊ×Ò³¡¢¾ßÌåÒ³¡¢ÉÏ´«Í¼Æ¬£¬·¢±íÆÀÂÛ
-LikeController£º/like, /dislike£¬ÔŞ²È¹¦ÄÜ£¬json AJAX½»»¥
+5.	Controllerå±‚
+HomeControllerï¼š/index, /user/{userId}ï¼Œè®¿é—®é»˜è®¤æˆ–è‡ªå·±çš„é¦–é¡µï¼Œè®¿é—®åˆ«äººé¦–é¡µ
+LoginControllerï¼š/reg, /login, /logoutï¼Œæ³¨å†Œï¼Œç™»å½•ï¼Œç™»å‡º
+MessageControllerï¼š/msg/list, /msg/detailï¼ˆè¿›å…¥detailé¡µé¢åæ¸…é™¤ç›¸å…³æœªè¯»ä¿¡æ¯ï¼‰, /msg/addmessageï¼Œä¸ªäººç«™å†…ä¿¡åˆ—è¡¨ï¼Œå…·ä½“å¯¹è¯æ¡†ï¼Œå‘é€ç«™å†…ä¿¡ï¼ˆè¡¨å•postæäº¤ï¼‰
+NewsControllerï¼š/news/{newsId}, /user/assNews, /uploadImage, /image, /addCommentï¼Œæ–°é—»çš„é¦–é¡µã€å…·ä½“é¡µã€ä¸Šä¼ å›¾ç‰‡ï¼Œå‘è¡¨è¯„è®º
+LikeControllerï¼š/like, /dislikeï¼Œèµè¸©åŠŸèƒ½ï¼Œjson AJAXäº¤äº’
 
-6.	Òì²½¶ÓÁĞ¡ª¡ªÔŞ²È£¬µÇÂ¼Ê±ÏµÍ³·¢ËÍÓÊ¼ş
+6.	å¼‚æ­¥é˜Ÿåˆ—â€”â€”èµè¸©ï¼Œç™»å½•æ—¶ç³»ç»Ÿå‘é€é‚®ä»¶
 event producer -> event list -> event consumer(deliver event to different event handlers)
-¡ª¡ªproducer½«ÊÂ¼ş×ª»»ÎªJSON¸ñÊ½Ñ¹Èëredis¶ÓÁĞ
-¡ª¡ªÊ×ÏÈÎªÃ¿¸öhandler¶¨Òå´¦ÀíµÄÊÂ¼şÀàĞÍ
-¡ª¡ªconsumerÀûÓÃSpring×Ô´ø¿ò¼ÜÕÒ³öËùÓĞhandler²¢Î¬»¤Ò»ÕÅÊÂ¼ş¶ÔÓ¦µÄhandler£¨¿ÉÒ»¶Ô¶à£©µÄmap
-¡ª¡ªredisµÄbrpop×èÈû¶Á³ö¶ÓÁĞÖğ¸ö·Ö·¢¸øÏà¹ØµÄhandler
-¡ª¡ª¡ª¡ª¡ª¡ª¡ª¿¼ÂÇÊÂ¼şµÄÓÅÏÈ¼¶À´Éè¼ÆConsumerµÄ¶Á³öË³Ğò
+â€”â€”producerå°†äº‹ä»¶è½¬æ¢ä¸ºJSONæ ¼å¼å‹å…¥redisé˜Ÿåˆ—
+â€”â€”é¦–å…ˆä¸ºæ¯ä¸ªhandlerå®šä¹‰å¤„ç†çš„äº‹ä»¶ç±»å‹
+â€”â€”consumeråˆ©ç”¨Springè‡ªå¸¦æ¡†æ¶æ‰¾å‡ºæ‰€æœ‰handlerå¹¶ç»´æŠ¤ä¸€å¼ äº‹ä»¶å¯¹åº”çš„handlerï¼ˆå¯ä¸€å¯¹å¤šï¼‰çš„map
+â€”â€”redisçš„brpopé˜»å¡è¯»å‡ºé˜Ÿåˆ—é€ä¸ªåˆ†å‘ç»™ç›¸å…³çš„handler
+â€”â€”â€”â€”â€”â€”â€”è€ƒè™‘äº‹ä»¶çš„ä¼˜å…ˆçº§æ¥è®¾è®¡Consumerçš„è¯»å‡ºé¡ºåº
