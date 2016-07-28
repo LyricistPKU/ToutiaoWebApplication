@@ -12,10 +12,10 @@ LoginRequiredInterceptor: 在消息，头条页面进入controller层之前检�
 Hostholder：维护一个ThreadLocal<User>
 
 2.	模型定义
+
 News（新闻）：id,title,link,image,like_count,comment_count,created_date,user_id
 
 User（用户）：id,name,password,salt,head_url
-
 密码由随机生成的salt和pwd经过MMD5加密得到,用户email字段和头像上传的前后端交互未完成
 
 Message（消息、站内信）：id,from_id,to_id,created_date,has_read,conversation_id
